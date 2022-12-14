@@ -1,0 +1,9 @@
+name: MendingTradeNerf
+main: com.kraby.mendingtradenerf.MendingTradeNerf
+version: 1.0
+
+commands:
+  mtnreload:
+    description: Reload the MendingTradeNerf config file
+    usage: /mtnreload
+    permission: MendingTradeNerf.reload 
