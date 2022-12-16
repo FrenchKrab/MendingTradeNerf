@@ -19,6 +19,8 @@ public final class MendingTradeNerf extends JavaPlugin {
 
     public void onEnable() {
 		singleton = this;
+
+		loadConfig();
 		
 		this.getServer().getPluginManager().registerEvents(new VillagerListener(), this);
 		
