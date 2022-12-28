@@ -10,32 +10,27 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.kraby.mendingtradenerf.MendingTradeNerf;
 import com.kraby.mendingtradenerf.utils.MainConfig;
 
-import org.bukkit.entity.AbstractVillager;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.VillagerAcquireTradeEvent;
-import org.bukkit.event.entity.VillagerReplenishTradeEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 
 public class VillagerListener implements Listener {
-	@EventHandler
-    public void onAcquire(VillagerAcquireTradeEvent event) {
-        AbstractVillager merchant = event.getEntity();
-        for (int index = 0; index < merchant.getRecipeCount(); ++index) {
-            MerchantRecipe recipe = this.ruinRecipe(merchant.getRecipe(index));
-            if (recipe == null) continue;
-            merchant.setRecipe(index, recipe);
+
+    @EventHandler
+    public void onInteraction(final PlayerInteractAtEntityEvent e) {
+        if (!(e.getRightClicked() instanceof Villager))
+            return;
+
+        final Villager merchant = (Villager) e.getRightClicked();
+        for (int i = 0; i < merchant.getRecipeCount(); ++i) {
+            MerchantRecipe recipe = this.ruinRecipe(merchant.getRecipe(i));
+            if (recipe != null) {
+                merchant.setRecipe(i, recipe);
+            }
         }
     }
 
-    @EventHandler
-    public void onExhaust(VillagerReplenishTradeEvent event) {
-        AbstractVillager merchant = event.getEntity();
-        for (int index = 0; index < merchant.getRecipeCount(); ++index) {
-            MerchantRecipe recipe = this.ruinRecipe(merchant.getRecipe(index));
-            if (recipe == null) continue;
-            merchant.setRecipe(index, recipe);
-        }
-    }
 
     private MerchantRecipe ruinRecipe(MerchantRecipe recipe) {
         ItemMeta meta = recipe.getResult().getItemMeta();
